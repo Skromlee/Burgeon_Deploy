@@ -22,7 +22,6 @@ import {
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
 import StatusDialog from "./StatusDialog";
-import { set } from "mongoose";
 const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
