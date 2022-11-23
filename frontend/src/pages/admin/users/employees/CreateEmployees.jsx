@@ -89,7 +89,6 @@ const CreateEmployee = () => {
     }, [admin, employee, isError, isSuccess, navigate, message, dispatch]);
 
     const onChange = (e) => {
-        console.log(e.target.name, e.target.value);
         if (e.target.name === "postcode") {
             if (e.target.value > 100) {
                 setSuggestion(true);
@@ -125,22 +124,6 @@ const CreateEmployee = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(
-            email,
-            password,
-            role,
-            firstname,
-            lastname,
-            phone,
-            citizen,
-            addressNo,
-            province,
-            district,
-            subdistrict,
-            postcode,
-            dob,
-            branch
-        );
         if (
             !email ||
             !password ||

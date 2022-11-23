@@ -21,13 +21,20 @@ import {
     ReceiverGetInformationFromPostcode,
     reset as informationReset,
 } from "../../../features/thailand/thailandSlice";
+import StatusDialog from "./StatusDialog";
+import { set } from "mongoose";
 const Parcels = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { admin } = useSelector((state) => state.admin);
-    const { parcels, isLoading, isError, message } = useSelector(
-        (state) => state.parcels
-    );
+    const {
+        parcels,
+        isLoading,
+        parcelStatuscheck,
+        isError,
+        message,
+        parcelStatus,
+    } = useSelector((state) => state.parcels);
 
     const { senderInformation, receiverInformation } = useSelector(
         (state) => state.thailand
@@ -45,9 +52,14 @@ const Parcels = () => {
             toast.error(message);
         }
 
-        // if (isSuccess) {
-        //     forceUpdate();
-        // }
+        if (parcelStatuscheck) {
+            // prepareFormForDetail()
+            console.log(status);
+            console.log(parcelStatuscheck);
+            setStatus(parcelStatus.status);
+            console.log(status);
+            // }
+        }
 
         if (!admin) {
             navigate("/admin/signin");
@@ -58,7 +70,7 @@ const Parcels = () => {
         return () => {
             dispatch(reset());
         };
-    }, [admin, navigate, isError, message, dispatch]);
+    }, [admin, navigate, isError, message, dispatch, parcelStatuscheck]);
 
     const initialFormDetails = {
         firstname: "",
@@ -138,7 +150,6 @@ const Parcels = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(senderFormDetails);
         const parcelData = {
             sender: {
                 firstname: senderFormDetails.firstname,
@@ -299,6 +310,21 @@ const Parcels = () => {
         setreceiverSuggestion(false);
     };
 
+    const [statusVisibility, setStatusVisibility] = useState(false);
+    const [status, setStatus] = useState({});
+    const onStatusClickhandler = (id) => {
+        const targetParcel = findParcelById(id);
+        setStatus(targetParcel[0].status);
+        setParcelFormDetails(targetParcel[0]);
+
+        setStatusVisibility((prev) => !prev);
+    };
+
+    const onStatusExitHandler = () => {
+        setStatusVisibility(false);
+    };
+    const onStatusSubmitHandler = () => {};
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -310,6 +336,17 @@ const Parcels = () => {
                     exitHandler={exitDeleteHandler}
                     confirmHandler={confirmDeleteHandler}
                     id={targetId}
+                />
+            )}
+
+            {statusVisibility && (
+                <StatusDialog
+                    onExitHandler={onStatusExitHandler}
+                    onSubmit={onStatusSubmitHandler}
+                    parcelFormDetails={parcelFormDetails}
+                    isEditing={isEditing}
+                    editingHandler={editingHandler}
+                    status={status}
                 />
             )}
 
@@ -346,6 +383,7 @@ const Parcels = () => {
                                 onDeleteClick={onDeleteHandler}
                                 visibility={visibility}
                                 EditVisibility={EditVisibility}
+                                onStatusClickhandler={onStatusClickhandler}
                             />
                         </div>
                     </div>

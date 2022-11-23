@@ -4,14 +4,27 @@ function ParcelCard({ data, idx, oncardClickHandler }) {
     const onClickHandler = () => {
         oncardClickHandler(data._id, idx);
     };
+    const { isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered } =
+        data.status;
+    let imgPath = "/status/";
+
+    if (isDelivered !== "false") {
+        imgPath += "400_M.png";
+    } else if (isOnDelivery !== "false") {
+        imgPath += "300_M.png";
+    } else if (isOnTrevelling !== "false") {
+        imgPath += "200_M.png";
+    } else if (isRegisterToBranch !== "false") {
+        imgPath += "100_M.png";
+    } else if (isRegisterToBranch === "false") {
+        imgPath += "100_F.png";
+    }
+
+    // console.log(isRegisterToBranch, isOnTrevelling, isOnDelivery, isDelivered);
     return (
         <button onClick={onClickHandler}>
             <div className="flex flex-col items-center border p-6 h-full w-full space-y-4">
-                <img
-                    src="/images/Box.svg"
-                    alt="box-img"
-                    className="h-20 w-20"
-                ></img>
+                <img src={imgPath} alt="box-img" className="h-20 w-20"></img>
                 <div key={idx} className=" space-y-2">
                     <div className="flex">
                         <div className="mr-2 px-[0.457rem] text-white bg-brightRed rounded-full">

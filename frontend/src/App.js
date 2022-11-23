@@ -9,6 +9,7 @@ import AdminLayout from "./Layouts/AdminLayout";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
+import Find from "./pages/Find";
 // user pages
 import User from "./pages/user/User";
 import Parcels from "./pages/user/Parcels";
@@ -36,10 +37,11 @@ import CreateGroup from "./pages/admin/group/CreateGroup";
 function App() {
     return (
         <>
-            <Router basename="/">
+            <Router>
                 <Routes>
                     <Route element={<HomeLayout />}>
                         <Route path="/" element={<Home />} />
+                        <Route path="/search" element={<Find />} />
                     </Route>
                     {/* User */}
                     <Route element={<UserLayout />}>
